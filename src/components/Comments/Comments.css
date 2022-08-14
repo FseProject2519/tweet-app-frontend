@@ -1,0 +1,31 @@
+.showMore {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin-top: 0px;
+}
+
+li {
+    padding-bottom: 1rem;
+}
+
+.commentBy {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 0.3rem;
+}
+
+.commentMsg {
+    font-size: 14px;
+}
