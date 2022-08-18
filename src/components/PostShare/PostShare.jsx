@@ -1,16 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./PostShare.css";
 import Share from "../../img/share.png";
 
 import { useDispatch, useSelector } from "react-redux";
-import { uploadPost } from "../../actions/UploadAction";
+import { uploadPost, editPost } from "../../actions/UploadAction";
 
-const PostShare = ({ location, postId }) => {
+const PostShare = ({ location, postId, oldData, isModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.authData);
   const loading = useSelector((state) => state.postReducer.uploading);
   const desc = useRef();
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [tweetMsg, setTweetMsg] = useState(oldData ? oldData.tweetMessage : undefined);
 
   // handle post upload
   const handleUpload = async (e) => {
@@ -19,13 +20,31 @@ const PostShare = ({ location, postId }) => {
     //post data
     const newPost = {
       createdBy: user.userId,
-      tweetMessage: desc.current.value,
+      tweetMessage: tweetMsg,
       tweetTopic: "default topic",
       repliedToTweet: postId
     };
     dispatch(uploadPost(newPost, location, user));
     resetShare();
   };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    //post data
+    const newPost = {
+      createdBy: user.userId,
+      tweetMessage: tweetMsg,
+      tweetTopic: oldData.tweetTopic ? oldData.tweetTopic : "default topic",
+      repliedToTweet: postId,
+      id: oldData.id
+    };
+    dispatch(editPost(newPost, location, user));
+    resetShare();
+  };
+
+  const setPostMessage = (msg) => {
+    setTweetMsg(msg)
+  }
 
   // Reset Post Share
   const resetShare = () => {
@@ -47,17 +66,19 @@ const PostShare = ({ location, postId }) => {
         <input
           type="text"
           placeholder={location !== "comment" ? "What's happening?" : "Comment..."}
+          defaultValue={isModal ? tweetMsg : ''}
           required
           ref={desc}
+          onChange={event => setPostMessage(event.target.value)}
         />
       </div>
       <button
         className={location !== "comment" ? "button ps-button" : "comment-button"}
-        onClick={handleUpload}
+        onClick={isModal ? handleEdit : handleUpload}
         disabled={loading}
       >
         {(location !== "comment") ?
-          loading ? "uploading" : "Share"
+          loading ? "uploading" : isModal ? "Edit" : "Share"
           : (
             <img src={Share} alt="" />
           )}

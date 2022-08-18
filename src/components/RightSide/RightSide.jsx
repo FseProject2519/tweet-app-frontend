@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./RightSide.css";
 
 import TrendCard from "../TrendCard/TrendCard";
-import ShareModal from "../ShareModal/ShareModal";
 import NavIcons from "../NavIcons/NavIcons";
-const RightSide = () => {
-  const [modalOpened, setModalOpened] = useState(false);
+import ExportPosts from "../ExportPosts/ExportPosts";
+const RightSide = ({ location }) => {
 
   return (
     <div className="RightSide">
@@ -13,13 +12,14 @@ const RightSide = () => {
 
       <NavIcons />
       {/* TrendCard */}
-      <TrendCard />
 
-      {/* Share buttong */}
-      <button className="button r-button" onClick={() => setModalOpened(true)}>
-        Share
-      </button>
-      <ShareModal modalOpened={modalOpened} setModalOpened={setModalOpened} />
+      {location === "homePage" && (
+        <TrendCard />
+      )}
+
+      {location === "profilePage" && (
+        <ExportPosts />
+      )}
     </div>
   );
 };

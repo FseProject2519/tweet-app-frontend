@@ -15,7 +15,7 @@ const Posts = ({ location }) => {
       dispatch(getUserPosts(user.userId)) :
       dispatch(getTimelinePosts());
   }, []);
-  if (!posts) return 'No Posts';
+  if (!posts || posts === undefined || posts === null) return 'No Posts';
 
   posts = posts.filter((post) => (post !== undefined && post !== null)).sort((a, b) => {
     return new Date(a.createdDateTime).getTime() -
