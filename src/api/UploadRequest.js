@@ -14,3 +14,5 @@ API.interceptors.request.use((req) => {
 
 export const uploadImage = (data) => API.post("/upload/", data);
 export const uploadPost = (data) => API.post(`/${data.createdBy}/add`, data);
+export const editPost = (data) =>
+  API.put(`/${data.createdBy}/update/${data.id}`, data);

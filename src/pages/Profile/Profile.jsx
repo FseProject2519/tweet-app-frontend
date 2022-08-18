@@ -7,12 +7,12 @@ import "./Profile.css";
 const Profile = () => {
   return (
     <div className="Profile">
-      <ProfileLeft />
+      <ProfileLeft location='profilePage' />
       <div className="Profile-center">
         <ProfileCard location='profilePage' />
         <PostSide location='profilePage' />
       </div>
-      <RightSide />
+      <RightSide location={"profilePage"} />
     </div>
   );
 };

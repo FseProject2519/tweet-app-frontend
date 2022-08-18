@@ -1,14 +1,25 @@
 import React from "react";
 import "./Comments.css";
+import { UilPen } from "@iconscout/react-unicons";
+import { UilTrashAlt } from '@iconscout/react-unicons'
+import ShareModal from "../ShareModal/ShareModal";
+import { deletePost } from "../../actions/PostsAction";
 
 class Comments extends React.Component {
 
+
     constructor(props) {
         super(props);
+        this.handleDelete = this.handleDelete.bind(this)
+        this.handleModalState = this.handleModalState.bind(this)
+
         this.state = {
             limit: 3,
-            showMore: true
+            showMore: true,
+            modalOpened: false,
         };
+
+
     }
 
     showMore = () => {
@@ -37,6 +48,17 @@ class Comments extends React.Component {
             );
     }
 
+
+
+    handleDelete = (data) => {
+        const { dispatch } = this.props;
+        dispatch(deletePost(data.id, this.props.user.userId, this.props.location));
+    };
+
+    handleModalState = (value) => {
+        this.setState({ modalOpened: value })
+    }
+
     render() {
         var cls = this.props.comments.slice(0, this.state.limit);
 
@@ -46,10 +68,33 @@ class Comments extends React.Component {
                     {cls.map(function (c, id) {
                         return (
                             <li key={id}>
-                                <div className="commentBy">@{c.createdBy}</div>
+                                <div className="detail">
+                                    <span className="name">@{c.createdBy}</span>
+                                    {c.createdBy === this.props.user.userId && (
+                                        <span className="name"><UilPen
+                                            width="2rem"
+                                            height="1.2rem"
+                                            onClick={() => this.handleModalState(true)}
+                                        />
+                                            <ShareModal
+                                                modalOpened={this.state.modalOpened}
+                                                setModalOpened={this.handleModalState}
+                                                oldData={c}
+                                                location={this.props.location}
+                                            />
+                                        </span>
+                                    )}
+                                    {c.createdBy === this.props.user.userId && (
+                                        <span className="name"><UilTrashAlt
+                                            width="2rem"
+                                            height="1.2rem"
+                                            onClick={() => this.handleDelete(c)}
+                                        /></span>
+                                    )}
+                                </div>
                                 <div className="commentMsg">{c.tweetMessage}</div>
                             </li>);
-                    })}
+                    }, this)}
                 </ul>
                 {this.renderButton()}
             </div>

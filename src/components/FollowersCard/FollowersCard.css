@@ -63,10 +63,18 @@
 }
 
 
-.FollowersCard>span {
+.FollowersCard>button {
     font-weight: bold;
     color: orange;
     align-self: center;
+    cursor: pointer;
+}
+
+.viewTimeline {
+    padding-top: 1rem;
+    font-weight: bold;
+    font-size: large;
+    color: orange;
     cursor: pointer;
 }
 

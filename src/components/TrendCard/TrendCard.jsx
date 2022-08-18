@@ -18,7 +18,7 @@ const TrendCard = () => {
                 : trends.map((trend, id) => {
                     return (
                         <div className="trend" key={id}>
-                            <span>#{trend.tweetTopic}</span>
+                            <span>#{trend.hashtags}</span>
                             <span>{trend.count} shares</span>
                         </div>
                     )

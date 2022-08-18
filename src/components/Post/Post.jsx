@@ -11,11 +11,13 @@ import PostShare from "../PostShare/PostShare";
 import { UilPen } from "@iconscout/react-unicons";
 import { UilTrashAlt } from '@iconscout/react-unicons'
 import { deletePost } from "../../actions/PostsAction";
+import ShareModal from "../ShareModal/ShareModal";
 
 const Post = ({ data, reply_data, location }) => {
   const user = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState((data.likedBy !== undefined && data.likedBy !== null) ? data.likedBy.includes(user.userId) : false);
   const [likes, setLikes] = useState((data.likedBy !== undefined && data.likedBy !== null) ? data.likedBy.length : 0);
+  const [modalOpened, setModalOpened] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -46,8 +48,15 @@ const Post = ({ data, reply_data, location }) => {
           <span className="name"><UilPen
             width="2rem"
             height="1.2rem"
-          // onClick={() => setModalOpened(true)}
-          /></span>
+            onClick={() => setModalOpened(true)}
+          />
+            <ShareModal
+              modalOpened={modalOpened}
+              setModalOpened={setModalOpened}
+              oldData={data}
+              location={location}
+            />
+          </span>
         )}
         {data.createdBy === user.userId && (
           <span className="name"><UilTrashAlt
@@ -80,7 +89,7 @@ const Post = ({ data, reply_data, location }) => {
       <span style={{ color: "var(--gray)", fontSize: "16px" }}>
         Comments
       </span>
-      <Comments comments={reply_data} />
+      <Comments comments={reply_data} location={location} user={user} dispatch={dispatch} />
     </div>
   );
 };
