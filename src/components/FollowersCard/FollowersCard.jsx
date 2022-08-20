@@ -5,7 +5,7 @@ import User from "../User/User";
 import { useSelector, useDispatch } from "react-redux";
 import { getTimelinePosts, getUserPosts } from "../../actions/PostsAction";
 
-const FollowersCard = () => {
+const FollowersCard = (location) => {
   const dispatch = useDispatch();
   const [persons, setPersons] = useState([]);
   const [limit, setLimit] = useState(3);
@@ -52,20 +52,23 @@ const FollowersCard = () => {
   const viewTimelinePosts = () => {
     dispatch(getTimelinePosts());
   }
-
-
   return (
-    <div className="FollowersCard">
-      <div className="viewTimeline" onClick={() => viewTimelinePosts()}>View All Posts</div>
-      <h3>People you may know</h3>
-      {persons.slice(0, limit + 1).map((person, id) => {
-        if (person.userId !== user.userId) return (
-          <div key={id} onClick={() => viewUserPosts(person.userId)}>
-            <User person={person} key={id} />
-          </div>);
-      })}
-      {renderButton()}
-    </div >
+    location !== undefined && location.location !== undefined && location.location.location === "profilePage" ?
+      <div className="FollowersCard">
+        <div className="viewTimeline" onClick={() => viewUserPosts(user.userId)}>View My Posts</div>
+      </div >
+      :
+      <div className="FollowersCard">
+        <div className="viewTimeline" onClick={() => viewTimelinePosts()}>View All Posts</div>
+        <h3>People you may know</h3>
+        {persons.slice(0, limit + 1).map((person, id) => {
+          if (person.userId !== user.userId) return (
+            <div key={id} onClick={() => viewUserPosts(person.userId)}>
+              <User person={person} key={id} />
+            </div>);
+        })}
+        {renderButton()}
+      </div >
   );
 };
 

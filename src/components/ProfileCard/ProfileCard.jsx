@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 const ProfileCard = ({ location }) => {
   const user = useSelector((state) => state.authReducer.authData);
   const posts = useSelector((state) => state.postReducer.posts)
+  const postCountsPosts = posts
+  const commentCountsPosts = posts
+
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -39,9 +42,15 @@ const ProfileCard = ({ location }) => {
             <>
               <div className="follow">
                 <span>{
-                  posts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet === undefined || post.repliedToTweet === null)).length
+                  postCountsPosts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet === undefined || post.repliedToTweet === null)).length
                 }</span>
                 <span>Posts</span>
+              </div>{" "}
+              <div className="follow">
+                <span>{
+                  commentCountsPosts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet !== undefined && post.repliedToTweet !== null)).length
+                }</span>
+                <span>Comments</span>
               </div>{" "}
             </>
           )}

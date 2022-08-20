@@ -8,7 +8,7 @@ const ProfileLeft = (location) => {
     <div className="ProfileSide">
       <LogoSearch />
       <InfoCard />
-      {location && location === "profilePage" && (<FollowersCard />)}
+      {(<FollowersCard location={location} />)}
     </div>
   )
 }

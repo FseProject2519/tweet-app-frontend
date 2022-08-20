@@ -1,17 +1,16 @@
+import { UilPen, UilTrashAlt } from "@iconscout/react-unicons";
+import _clone from 'lodash/clone';
+import moment from 'moment';
 import React, { useState } from "react";
-import "./Post.css";
-import Comment from "../../img/comment.png";
-import Share from "../../img/share.png";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePost, getTrendingPosts, getTrends, getUserPosts } from "../../actions/PostsAction";
+import { likePost } from "../../api/PostsRequests";
 import Heart from "../../img/like.png";
 import NotLike from "../../img/notlike.png";
-import { likePost } from "../../api/PostsRequests";
-import { useSelector, useDispatch } from "react-redux";
 import Comments from "../Comments/Comments";
 import PostShare from "../PostShare/PostShare";
-import { UilPen } from "@iconscout/react-unicons";
-import { UilTrashAlt } from '@iconscout/react-unicons'
-import { deletePost } from "../../actions/PostsAction";
 import ShareModal from "../ShareModal/ShareModal";
+import "./Post.css";
 
 const Post = ({ data, reply_data, location }) => {
   const user = useSelector((state) => state.authReducer.authData);
@@ -23,6 +22,7 @@ const Post = ({ data, reply_data, location }) => {
 
   const handleDelete = () => {
     dispatch(deletePost(data.id, user.userId, location));
+    dispatch(getTrends());
   };
 
   const handleLike = () => {
@@ -30,6 +30,40 @@ const Post = ({ data, reply_data, location }) => {
     setLiked(prevLiked => !prevLiked);
     liked ? setLikes(likes - 1) : setLikes(likes + 1)
   };
+
+
+  const swapHashTags = (text) => {
+    let displayText = _clone(text)
+    let words = displayText.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      if (/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(words[i])) {
+        words[i] = createTag(words[i])
+      }
+      else if (/(^|\B)@(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(words[i])) {
+        words[i] = createTag(words[i])
+      }
+    }
+    return words
+  }
+
+  const createTag = (text) => {
+    var dom = document.createElement('div');
+    dom.innerHTML = text;
+    return dom;
+  }
+
+  const handleTagClick = (tag) => {
+    if (/(^|\B)@(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(tag)) {
+      dispatch(getUserPosts(tag.substring(1)))
+    } else if (/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(tag)) {
+      dispatch(getTrendingPosts(tag.substring(1)))
+    }
+
+  }
+  const getMoment = (timestamp) => {
+    return moment(timestamp).fromNow();
+  }
+
   return (
     <div className="Post">
 
@@ -65,11 +99,22 @@ const Post = ({ data, reply_data, location }) => {
             onClick={handleDelete}
           /></span>
         )}
+        <span className="timestamp">{
+          getMoment(data.createdDateTime)
+        }
+        </span>
       </div>
+      <div>
+        {swapHashTags(data.tweetMessage).map(message => {
+          if (typeof message === 'string') {
+            return message + " "
+          }
+          else {
+            return <button onClick={() => { handleTagClick(message.innerHTML) }} className='tag'>{message.innerHTML}{'\u00A0'}</button>
+          }
+        })}
 
-      {data.tweetMessage}
-
-
+      </div>
       <div className="postReact">
         <img
           src={liked ? Heart : NotLike}
@@ -82,7 +127,7 @@ const Post = ({ data, reply_data, location }) => {
         {likes} likes
       </span>
       <span>
-        <PostShare location="comment" postId={data.id} />
+        <PostShare location="comment" postId={data.id} isModal={false} />
       </span>
 
 
