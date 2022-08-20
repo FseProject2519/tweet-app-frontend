@@ -29,7 +29,18 @@ export const getTrends = () => async (dispatch) => {
     dispatch({ type: "RETREIVING_TREND_SUCCESS", data: data });
   } catch (error) {
     console.log(error);
-    dispatch({ type: "RETREIVING_TREND_SFAIL" });
+    dispatch({ type: "RETREIVING_TREND_FAIL" });
+  }
+};
+
+export const getTrendingPosts = (hashtags) => async (dispatch) => {
+  dispatch({ type: "RETREIVING_START" });
+  try {
+    const { data } = await PostsApi.getTrendingPosts(hashtags);
+    dispatch({ type: "RETREIVING_SUCCESS", data: data });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "RETREIVING_FAIL" });
   }
 };
 

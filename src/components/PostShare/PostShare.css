@@ -20,7 +20,7 @@
     gap: 1rem;
 }
 
-.PostShare>div>input {
+.mentions {
     background-color: var(--inputColor);
     border-radius: 10px;
     padding: 10px;
@@ -100,7 +100,7 @@
     gap: 1rem;
 }
 
-.Comment>div>input {
+.Comment.mentions {
     background-color: var(--inputColor);
     border-radius: 10px;
     padding: 10px;
