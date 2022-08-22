@@ -146,7 +146,9 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
         onChange={event => setPostMessage(event.target.value)}
         placeholder={location !== "comment" ? "What's happening?" : "Comment..."}
         className="mentions"
-
+        minLength={1}
+        maxLength={144}
+        required
       >
         <Mention
           type="user"
@@ -162,6 +164,7 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
           data={hashtagMentionData}
           className="mentions__mention"
           markup="#{{__id__||__display__}}"
+          maxLength={50}
         />
       </MentionsInput>
       <button
