@@ -58,3 +58,14 @@ export const deletePost = (id, userId, location) => async (dispatch) => {
     dispatch({ type: "RETREIVING_FAIL" });
   }
 };
+
+export const searchPosts = (text) => async (dispatch) => {
+  dispatch({ type: "RETREIVING_START" });
+  try {
+    const { data } = await PostsApi.searchPosts(text);
+    dispatch({ type: "RETREIVING_SUCCESS", data: data });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "RETREIVING_FAIL" });
+  }
+};

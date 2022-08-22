@@ -37,3 +37,7 @@ export const exportPost = (userId) => EXPORT_API.get(`/${userId}/export`);
 export const getTrendingPosts = (hashtags) =>
   API.get(`/search?$isPaged=false&tag=${hashtags}&withComments=true`);
 export const getHashtags = () => API.get(`/all/hashtags`);
+export const searchPosts = (text) =>
+  API.get(
+    `/search?isPaged=false&sortField=createdDateTime&sortOrder=desc&withComments=true&tweetMessage=${text}`
+  );

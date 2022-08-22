@@ -36,10 +36,10 @@ const Post = ({ data, reply_data, location }) => {
     let displayText = _clone(text)
     let words = displayText.split(" ");
     for (let i = 0; i < words.length; i++) {
-      if (/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(words[i])) {
+      if (/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,50})(\b|\r)/gi.test(words[i])) {
         words[i] = createTag(words[i])
       }
-      else if (/(^|\B)@(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/gi.test(words[i])) {
+      else if (/(^|\B)@(?![0-9_]+\b)([a-zA-Z0-9_]{1,50})(\b|\r)/gi.test(words[i])) {
         words[i] = createTag(words[i])
       }
     }

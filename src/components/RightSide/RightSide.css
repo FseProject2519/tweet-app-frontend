@@ -1,32 +1,28 @@
-.RightSide{
+.RightSide {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-
-.navIcons{
-    margin-top: 1rem;
+.navIcons {
     display: flex;
+    background-color: var(--cardColor);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    align-self: center;
     justify-content: space-between;
 }
 
-.navIcons>a>img{
+.nav {
     width: 1.5rem;
     height: 1.5rem;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
-.navIcons>img{
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-.navIcons>img:hover{
-    cursor: pointer;
-}
-
-.r-button{
-    height:3rem;
+.r-button {
+    height: 3rem;
     width: 80%;
     align-self: center;
 }
