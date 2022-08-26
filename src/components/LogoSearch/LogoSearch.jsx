@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../../img/logo.png";
 import './LogoSearch.css'
 import { UilSearch } from '@iconscout/react-unicons'
 import { MentionsInput, Mention } from 'react-mentions'
@@ -10,6 +9,7 @@ import { getHashtags } from "../../api/PostsRequests";
 import _clone from 'lodash/clone'
 import _escapeRegExp from 'lodash/escapeRegExp'
 import { getTrendingPosts, searchPosts } from "../../actions/PostsAction";
+import { UilUsersAlt } from '@iconscout/react-unicons'
 
 const LogoSearch = () => {
   const dispatch = useDispatch();
@@ -88,7 +88,7 @@ const LogoSearch = () => {
   }
   return (
     <div className="LogoSearch">
-      <img src={Logo} alt="" />
+      <UilUsersAlt className="logo-in" />
       <div className="Search">
         <MentionsInput
           value={searchText}
