@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Auth.css";
-import Logo from "../../img/logo.png";
 import { logIn, signUp } from "../../actions/AuthActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { UilUsersAlt } from '@iconscout/react-unicons'
 
 const Auth = () => {
   const initialState = {
@@ -55,11 +55,10 @@ const Auth = () => {
       {/* left side */}
 
       <div className="a-left">
-        <img src={Logo} alt="" />
+        <UilUsersAlt className="logo" />
 
         <div className="Webname">
-          <h1>ZKC Media</h1>
-          <h6>Explore the ideas throughout the world</h6>
+          <h1>TweetApp</h1>
         </div>
       </div>
 
