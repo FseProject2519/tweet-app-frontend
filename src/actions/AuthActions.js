@@ -30,5 +30,19 @@ export const signUp = (formData, navigate) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
+  try {
+    await AuthApi.logOut();
+  } catch (error) {
+    console.log(error);
+  }
+  dispatch({ type: "LOG_OUT" });
+};
+
+export const deleteUser = (userId) => async (dispatch) => {
+  try {
+    await UserApi.deleteUser(userId);
+  } catch (error) {
+    console.log(error);
+  }
   dispatch({ type: "LOG_OUT" });
 };

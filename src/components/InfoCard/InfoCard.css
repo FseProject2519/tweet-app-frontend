@@ -1,5 +1,4 @@
-.InfoCard
-{
+.InfoCard {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -9,19 +8,47 @@
     width: 90%;
 }
 
-.infoHead{
+.infoHead {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.infoHead>div:hover{
+.infoHead>div:hover {
     cursor: pointer;
 }
 
-.logout-button{
+.delete-button {
     width: 7rem;
     height: 2rem;
     margin-top: 6rem;
     align-self: flex-end;
+}
+
+.delete-confirm-button {
+    height: 3rem;
+    width: 20%;
+    align-self: center;
+    margin: 3rem;
+    background: linear-gradient(106.23deg, rgb(221, 153, 153) 0%, #f95f35 100%);
+    color: white;
+    border-radius: 1rem;
+    border-width: 0;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+}
+
+.not-delete-confirm-button {
+    height: 3rem;
+    width: 20%;
+    align-self: center;
+    margin: 3rem;
+    background: linear-gradient(106.23deg, rgb(8, 215, 8) 0%, green 100%);
+    color: white;
+    border-radius: 1rem;
+    border-width: 0;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
 }
