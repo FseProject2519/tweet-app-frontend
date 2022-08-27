@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react'
 import './TrendCard.css'
-import { getTrends } from "../../actions/PostsAction";
+import { getTrends, getTrendingPosts } from "../../actions/PostsAction";
 import { useSelector, useDispatch } from "react-redux";
 
 const TrendCard = () => {
     const dispatch = useDispatch();
     let { trends, loading } = useSelector((state) => state.trendsReducer);
+
+    const viewTrendingPosts = (hashtags) => {
+
+        dispatch(getTrendingPosts(hashtags));
+
+    }
+
     useEffect(() => {
         dispatch(getTrends());
     }, []);
+
     if (!trends) return 'No Trends';
     return (
         <div className="TrendCard">
@@ -17,9 +25,11 @@ const TrendCard = () => {
                 ? "Fetching posts...."
                 : trends.map((trend, id) => {
                     return (
-                        <div className="trend" key={id}>
-                            <span>#{trend.tweetTopic}</span>
-                            <span>{trend.count} shares</span>
+                        <div key={id} onClick={() => viewTrendingPosts(trend.hashtags)}>
+                            <div className="trend" key={id}>
+                                <span>#{trend.hashtags}</span>
+                                <span>{trend.count} shares</span>
+                            </div>
                         </div>
                     )
                 })

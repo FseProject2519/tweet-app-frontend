@@ -29,7 +29,18 @@ export const getTrends = () => async (dispatch) => {
     dispatch({ type: "RETREIVING_TREND_SUCCESS", data: data });
   } catch (error) {
     console.log(error);
-    dispatch({ type: "RETREIVING_TREND_SFAIL" });
+    dispatch({ type: "RETREIVING_TREND_FAIL" });
+  }
+};
+
+export const getTrendingPosts = (hashtags) => async (dispatch) => {
+  dispatch({ type: "RETREIVING_START" });
+  try {
+    const { data } = await PostsApi.getTrendingPosts(hashtags);
+    dispatch({ type: "RETREIVING_SUCCESS", data: data });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "RETREIVING_FAIL" });
   }
 };
 
@@ -42,6 +53,17 @@ export const deletePost = (id, userId, location) => async (dispatch) => {
         ? await PostsApi.getUserPosts(userId)
         : await PostsApi.getTimelinePosts();
     dispatch({ type: "RETREIVING_SUCCESS", data: post_data.data });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: "RETREIVING_FAIL" });
+  }
+};
+
+export const searchPosts = (text) => async (dispatch) => {
+  dispatch({ type: "RETREIVING_START" });
+  try {
+    const { data } = await PostsApi.searchPosts(text);
+    dispatch({ type: "RETREIVING_SUCCESS", data: data });
   } catch (error) {
     console.log(error);
     dispatch({ type: "RETREIVING_FAIL" });

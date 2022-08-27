@@ -32,3 +32,26 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.timestamp {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    justify-content: center;
+    font-weight: normal;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.tag {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: blue;
+    cursor: pointer;
+    font-size: 14px;
+}

@@ -15,7 +15,7 @@ const Posts = ({ location }) => {
       dispatch(getUserPosts(user.userId)) :
       dispatch(getTimelinePosts());
   }, []);
-  if (!posts) return 'No Posts';
+  if (!posts || posts === undefined || posts === null) return <p data-test="Posts">'No Posts'</p>;
 
   posts = posts.filter((post) => (post !== undefined && post !== null)).sort((a, b) => {
     return new Date(a.createdDateTime).getTime() -
@@ -25,7 +25,7 @@ const Posts = ({ location }) => {
 
   let filtered_posts = posts.filter((post) => (post.repliedToTweet === undefined || post.repliedToTweet === null));
   return (
-    <div className="Posts">
+    <div className="Posts" data-test="Posts">
       {loading
         ? "Fetching posts...."
         : filtered_posts.map((post, id) => {

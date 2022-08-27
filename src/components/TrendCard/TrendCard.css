@@ -1,4 +1,4 @@
-.TrendCard{
+.TrendCard {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -9,18 +9,18 @@
 }
 
 
-.trend{
+.trend {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    cursor: pointer;
 }
 
 
-.trend>span:nth-of-type(1)
-{
+.trend>span:nth-of-type(1) {
     font-weight: bold;
 }
-.trend>span:nth-of-type(2)
-{
+
+.trend>span:nth-of-type(2) {
     font-size: 13px;
 }
