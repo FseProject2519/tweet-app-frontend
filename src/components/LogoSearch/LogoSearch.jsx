@@ -87,8 +87,8 @@ const LogoSearch = () => {
     setSearchText(message)
   }
   return (
-    <div className="LogoSearch">
-      <UilUsersAlt className="logo-in" />
+    <div className="LogoSearch" data-test="LogoSearch-Test">
+      < UilUsersAlt className="logo-in" />
       <div className="Search">
         <MentionsInput
           value={searchText}
@@ -117,7 +117,7 @@ const LogoSearch = () => {
           <UilSearch />
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

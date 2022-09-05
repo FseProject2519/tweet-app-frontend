@@ -54,11 +54,11 @@ const FollowersCard = (location) => {
   }
   return (
     location !== undefined && location.location !== undefined && location.location.location === "profilePage" ?
-      <div className="FollowersCard">
+      <div className="FollowersCard" data-test="FollowersCard-Test">
         <div className="viewTimeline" onClick={() => viewUserPosts(user.userId)}>View My Posts</div>
       </div >
       :
-      <div className="FollowersCard">
+      <div className="FollowersCard" data-test="FollowersCard-Test">
         <div className="viewTimeline" onClick={() => viewTimelinePosts()}>View All Posts</div>
         <h3>People you may know</h3>
         {persons.slice(0, limit + 1).map((person, id) => {

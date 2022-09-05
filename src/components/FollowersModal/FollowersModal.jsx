@@ -16,6 +16,7 @@ const FollowersModal = ({ modalOpened, setModalOpened }) => {
       size="55%"
       opened={modalOpened}
       onClose={() => setModalOpened(false)}
+      data-test="FollowersModal-Test"
     >
 
       <FollowersCard location='modal' />

@@ -15,7 +15,7 @@ const NavIcons = () => {
   }
 
   return (
-    <div className="navIcons">
+    <div className="navIcons" data-test="NavIcons-Test">
       <Link className="nav" to="../home">
         <div title="Home" >
           <UilEstate />

@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Posts from "./Posts";
 import { findByTestAttr, storeFactory } from "../../TestUtils";
+import User from "./User";
 
 let initialState = {
   postReducer: {
@@ -23,11 +23,12 @@ const setup = (state = initialState) => {
   const store = storeFactory(state);
   const props = {
     location: "",
+    person: { userId: "user1", firstName: "firstName1", lastName: "lastName1" },
   };
   return mount(
     <Provider store={store}>
       <BrowserRouter>
-        <Posts {...props} />
+        <User {...props} />
       </BrowserRouter>
     </Provider>
   );
@@ -41,9 +42,9 @@ afterEach(() => {
   assignMock.mockClear();
 });
 
-test("Render Posts Component without error", async () => {
+test("Render User Component without error", async () => {
   const wrapper = setup();
-  const val = "Posts-Test";
+  const val = "User-Test";
   try {
     const posts = await findByTestAttr(wrapper, val);
     expect(posts.length).toBe(1);

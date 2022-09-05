@@ -65,7 +65,7 @@ const Post = ({ data, reply_data, location }) => {
   }
 
   return (
-    <div className="Post">
+    <div className="Post" data-test="Post-Test">
 
       <div className="detail">
         <span><img

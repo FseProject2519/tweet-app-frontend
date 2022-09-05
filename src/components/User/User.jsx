@@ -4,7 +4,7 @@ const User = ({ person }) => {
 
 
   return (
-    <div className="follower">
+    <div className="follower" data-test="User-Test">
       <div>
         <img
           src={

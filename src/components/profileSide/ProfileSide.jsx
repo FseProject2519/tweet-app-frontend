@@ -5,12 +5,12 @@ import ProfileCard from '../ProfileCard/ProfileCard'
 import './ProfileSide.css'
 const ProfileSide = () => {
   return (
-    <div className="ProfileSide">
-        <LogoSearch/>
-        <ProfileCard location = 'homepage'/>
-        <FollowersCard/>
+    <div className="ProfileSide" data-test="ProfileSide-Test">
+      <LogoSearch />
+      <ProfileCard location='homepage' />
+      <FollowersCard />
     </div>
-    )
+  )
 }
 
 export default ProfileSide

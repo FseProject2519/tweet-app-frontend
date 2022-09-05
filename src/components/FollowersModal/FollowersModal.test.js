@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Posts from "./Posts";
 import { findByTestAttr, storeFactory } from "../../TestUtils";
+import FollowersModal from "./FollowersModal";
 
 let initialState = {
   postReducer: {
@@ -22,12 +22,15 @@ let initialState = {
 const setup = (state = initialState) => {
   const store = storeFactory(state);
   const props = {
-    location: "",
+    modalOpened: "true",
+    setModalOpened: (val) => {
+      this.props.modalOpened = val;
+    },
   };
   return mount(
     <Provider store={store}>
       <BrowserRouter>
-        <Posts {...props} />
+        <FollowersModal {...props} />
       </BrowserRouter>
     </Provider>
   );
@@ -41,12 +44,12 @@ afterEach(() => {
   assignMock.mockClear();
 });
 
-test("Render Posts Component without error", async () => {
+test("Render FollowersModal Component without error", async () => {
   const wrapper = setup();
-  const val = "Posts-Test";
+  const val = "FollowersModal-Test";
   try {
     const posts = await findByTestAttr(wrapper, val);
-    expect(posts.length).toBe(1);
+    expect(posts.length).toBeGreaterThan(0);
   } catch (error) {
     console.log(error);
   }

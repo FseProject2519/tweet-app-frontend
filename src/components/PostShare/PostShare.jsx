@@ -130,7 +130,7 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
   }));
 
   return (
-    <div className={location !== "comment" ? "PostShare" : "Comment"}>
+    <div className={location !== "comment" ? "PostShare" : "Comment"} data-test="PostShare-Test">
       {location !== "comment" && (
         <img
           src={
