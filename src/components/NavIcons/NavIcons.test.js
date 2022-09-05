@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Posts from "./Posts";
+import NavIcons from "./NavIcons";
 import { findByTestAttr, storeFactory } from "../../TestUtils";
 
 let initialState = {
@@ -27,7 +27,7 @@ const setup = (state = initialState) => {
   return mount(
     <Provider store={store}>
       <BrowserRouter>
-        <Posts {...props} />
+        <NavIcons {...props} />
       </BrowserRouter>
     </Provider>
   );
@@ -43,7 +43,7 @@ afterEach(() => {
 
 test("Render Posts Component without error", async () => {
   const wrapper = setup();
-  const val = "Posts-Test";
+  const val = "NavIcons-Test";
   try {
     const posts = await findByTestAttr(wrapper, val);
     expect(posts.length).toBe(1);

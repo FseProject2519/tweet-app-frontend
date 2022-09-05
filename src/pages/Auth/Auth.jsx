@@ -51,7 +51,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="Auth">
+    <div className="Auth" data-test="Auth-Test">
       {/* left side */}
 
       <div className="a-left">

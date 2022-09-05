@@ -25,7 +25,7 @@ const Posts = ({ location }) => {
 
   let filtered_posts = posts.filter((post) => (post.repliedToTweet === undefined || post.repliedToTweet === null));
   return (
-    <div className="Posts" data-test="Posts">
+    <div className="Posts" data-test="Posts-Test">
       {loading
         ? "Fetching posts...."
         : filtered_posts.map((post, id) => {

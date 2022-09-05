@@ -7,7 +7,7 @@ import ExportPosts from "../ExportPosts/ExportPosts";
 const RightSide = ({ location }) => {
 
   return (
-    <div className="RightSide">
+    <div className="RightSide" data-test="RightSide-Test">
       {/* Side Navbar */}
 
       <NavIcons />

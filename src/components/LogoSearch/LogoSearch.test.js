@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Posts from "./Posts";
 import { findByTestAttr, storeFactory } from "../../TestUtils";
+import LogoSearch from "./LogoSearch";
 
 let initialState = {
   postReducer: {
@@ -27,7 +27,7 @@ const setup = (state = initialState) => {
   return mount(
     <Provider store={store}>
       <BrowserRouter>
-        <Posts {...props} />
+        <LogoSearch {...props} />
       </BrowserRouter>
     </Provider>
   );
@@ -41,9 +41,9 @@ afterEach(() => {
   assignMock.mockClear();
 });
 
-test("Render Posts Component without error", async () => {
+test("Render LogoSearch Component without error", async () => {
   const wrapper = setup();
-  const val = "Posts-Test";
+  const val = "LogoSearch-Test";
   try {
     const posts = await findByTestAttr(wrapper, val);
     expect(posts.length).toBe(1);

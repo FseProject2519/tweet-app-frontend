@@ -11,7 +11,7 @@ const ProfileCard = ({ location }) => {
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
-    <div className="ProfileCard">
+    <div className="ProfileCard" data-test="ProfileCard-Test">
       <div className="ProfileImages">
         <img src={
           user.coverPicture

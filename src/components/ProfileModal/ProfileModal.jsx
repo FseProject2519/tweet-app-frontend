@@ -61,7 +61,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   };
 
   return (
-    <Modal
+    <Modal data-test="ProfileModal-Test"
       overlayColor={
         theme.colorScheme === "dark"
           ? theme.colors.dark[9]
