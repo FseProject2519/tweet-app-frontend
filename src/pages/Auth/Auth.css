@@ -59,8 +59,26 @@
   padding: 1rem;
 }
 
+.authFormFp {
+  background-color: var(--cardColor);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.authFormFp>div {
+  width: 70%;
+  align-items: center;
+  justify-content: center;
+}
+
 .authForm>div {
   width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.forgotPass {
+  max-width: 70%;
   align-items: center;
   justify-content: center;
 }
