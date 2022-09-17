@@ -4,8 +4,8 @@ import * as PostsApi from "../../api/PostsRequests";
 const ExportPosts = () => {
     const user = useSelector((state) => state.authReducer.authData);
 
-    const handleExportPost = (userId) => {
-        PostsApi.exportPost(userId).then(response => {
+    const handleExportPost = async (userId) => {
+        await PostsApi.exportPost(userId).then(response => {
             //Create a Blob from the PDF Stream
             const file = new Blob(
                 [response.data],
@@ -25,7 +25,7 @@ const ExportPosts = () => {
     }
 
     return (
-        <button className="button r-button" onClick={() => { handleExportPost(user.userId) }}>Export My Posts</button>
+        <button className="button r-button" onClick={() => { handleExportPost(user.userId) }} data-test="ExportPosts-Test">Export My Posts</button>
     )
 }
 

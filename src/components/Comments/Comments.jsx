@@ -99,7 +99,7 @@ class Comments extends React.Component {
         var cls = this.props.comments.slice(0, this.state.limit);
 
         return (
-            <div className="commentBox">
+            <div className="commentBox" data-test="Comments-Test">
                 <ul>
                     {cls.map(function (c, id) {
                         return (

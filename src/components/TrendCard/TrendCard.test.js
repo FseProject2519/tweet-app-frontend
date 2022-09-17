@@ -2,14 +2,14 @@ import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import Posts from "./Posts";
+import TrendCard from "./TrendCard";
 import { findByTestAttr, storeFactory } from "../../TestUtils";
 
 let initialState = {
-  postReducer: {
-    posts: [
-      { createdBy: "test1", tweetMessage: "post1" },
-      { createdBy: "test2", tweetMessage: "post2" },
+  trendsReducer: {
+    trends: [
+      { hashtags: "#test1", count: "2" },
+      { hashtags: "#test2", count: "1" },
     ],
   },
   authReducer: {
@@ -27,7 +27,7 @@ const setup = (state = initialState) => {
   return mount(
     <Provider store={store}>
       <BrowserRouter>
-        <Posts {...props} />
+        <TrendCard {...props} />
       </BrowserRouter>
     </Provider>
   );
@@ -41,9 +41,9 @@ afterEach(() => {
   assignMock.mockClear();
 });
 
-test("Render Posts Component without error", async () => {
+test("Render TrendCard Component without error", async () => {
   const wrapper = setup();
-  const val = "Posts-Test";
+  const val = "TrendCard-Test";
   try {
     const posts = await findByTestAttr(wrapper, val);
     expect(posts.length).toBe(1);

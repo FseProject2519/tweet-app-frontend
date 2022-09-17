@@ -19,7 +19,7 @@ const TrendCard = () => {
 
     if (!trends) return 'No Trends';
     return (
-        <div className="TrendCard">
+        <div className="TrendCard" data-test="TrendCard-Test">
             <h3>Latest Trends</h3>
             {loading
                 ? "Fetching posts...."
