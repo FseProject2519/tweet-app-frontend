@@ -11,10 +11,7 @@ function App() {
     <div
       className="App"
       style={{
-        height:
-          window.location.href === "http://localhost:3000/chat"
-            ? "calc(100vh - 2rem)"
-            : "auto",
+        height: "auto",
       }}
     >
       <div className="blur" style={{ top: "-18%", right: "0" }}></div>
