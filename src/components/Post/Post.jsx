@@ -19,11 +19,7 @@ const Post = ({ data, reply_data, location }) => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const dispatch = useDispatch();
-  const images = importAll(require.context('../../img', false));
-
-  function importAll(r) {
-    return r.keys().map(r);
-  }
+  const images = useSelector((state) => state.imageReducer.images)
 
 
   const getImage = (type) => {

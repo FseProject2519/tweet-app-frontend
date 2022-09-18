@@ -26,3 +26,6 @@ export const verifyOtp = (userId, otp) => API.post(`/${userId}/verifyOtp`, otp);
 
 export const resetPassword = (userId, passwordResetData) =>
   API.post(`/${userId}/resetpassword`, passwordResetData);
+
+export const updateUser = (userId, formData) =>
+  API.put(`/${userId}/update`, formData);

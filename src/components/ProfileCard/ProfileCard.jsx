@@ -7,14 +7,11 @@ const ProfileCard = ({ location }) => {
   const posts = useSelector((state) => state.postReducer.posts)
   const postCountsPosts = posts
   const commentCountsPosts = posts
-
   const images = importAll(require.context('../../img', false));
 
   function importAll(r) {
     return r.keys().map(r);
   }
-
-
   const getImage = (type) => {
     for (let img in images) {
       if (("" + images[img]).includes(user.userId + "_" + type)) {
