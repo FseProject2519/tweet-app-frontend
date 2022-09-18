@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-const User = ({ person }) => {
-  const images = importAll(require.context('../../img', false));
+import { useSelector } from "react-redux";
 
-  function importAll(r) {
-    return r.keys().map(r);
-  }
+const User = ({ person }) => {
+  const images = useSelector((state) => state.imageReducer.images)
 
 
   const getImage = (type) => {
