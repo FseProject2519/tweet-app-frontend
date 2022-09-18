@@ -19,11 +19,7 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
   const [tweetMsg, setTweetMsg] = useState(oldData ? oldData.tweetMessage : "");
   const [persons, setPersons] = useState([]);
   const [hashtags, setHashtags] = useState([]);
-  const images = importAll(require.context('../../img', false));
-
-  function importAll(r) {
-    return r.keys().map(r);
-  }
+  const images = useSelector((state) => state.imageReducer.images)
 
 
   const getImage = (type) => {
