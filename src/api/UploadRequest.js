@@ -12,7 +12,17 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const uploadImage = (data) => API.post("/upload/", data);
+export const uploadPicture = (userId, file) => {
+  axios.post("http://localhost:5000/api/uploadfile", file, {
+    headers: {
+      "content-type": "multipart/form-data",
+      // ,
+      // "Access-Control-Allow-Origin": "*",
+      // "Access-Control-Allow-Methods": "*",
+      // "Access-Control-Allow-Headers": "*",
+    },
+  });
+};
 export const uploadPost = (data) => API.post(`/${data.createdBy}/add`, data);
 export const editPost = (data) =>
   API.put(`/${data.createdBy}/update/${data.id}`, data);

@@ -19,6 +19,22 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
   const [tweetMsg, setTweetMsg] = useState(oldData ? oldData.tweetMessage : "");
   const [persons, setPersons] = useState([]);
   const [hashtags, setHashtags] = useState([]);
+  const images = importAll(require.context('../../img', false));
+
+  function importAll(r) {
+    return r.keys().map(r);
+  }
+
+
+  const getImage = (type) => {
+    for (let img in images) {
+      if (("" + images[img]).includes(user.userId + "_" + type)) {
+        return images[img]
+      }
+    }
+  }
+
+  const [profilePic, setProfilePic] = useState(getImage("profile") ? getImage("profile") : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg")
 
   const swapUserTags = (text) => {
     let displayText = _clone(text)
@@ -134,9 +150,7 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
       {location !== "comment" && (
         <img
           src={
-            user.profilePicture
-              ? serverPublic + user.profilePicture
-              : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            profilePic
           }
           alt="Profile"
         />

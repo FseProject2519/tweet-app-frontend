@@ -19,6 +19,22 @@ const Post = ({ data, reply_data, location }) => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const dispatch = useDispatch();
+  const images = importAll(require.context('../../img', false));
+
+  function importAll(r) {
+    return r.keys().map(r);
+  }
+
+
+  const getImage = (type) => {
+    for (let img in images) {
+      if (("" + images[img]).includes(data.createdBy + "_" + type)) {
+        return images[img]
+      }
+    }
+  }
+
+  const [profilePic, setProfilePic] = useState(getImage("profile") ? getImage("profile") : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg")
 
   const handleDelete = () => {
     dispatch(deletePost(data.id, user.userId, location));
@@ -69,11 +85,7 @@ const Post = ({ data, reply_data, location }) => {
 
       <div className="detail">
         <span><img
-          src={
-            user.profilePicture
-              ? + user.profilePicture
-              : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
-          }
+          src={profilePic}
           alt="ProfileImage"
         />
         </span>
