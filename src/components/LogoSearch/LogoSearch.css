@@ -14,7 +14,7 @@
 }
 
 .mentions_search {
-  background-color: transparent;
+  background-color: var(--cardColor);
   border: none;
   outline: none;
   width: 100%;
@@ -26,8 +26,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(106.23deg, #f99827 0%, #f95f35 100%);
+  background: var(--buttonBg);
   border-radius: 5px;
+  border-color: transparent;
   padding: 4px;
   color: white;
   margin-left: auto;
@@ -38,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(106.23deg, #f99827 0%, #f95f35 100%);
+  background: var(--buttonBg);
   border-radius: 5px;
   border: 0px;
   padding: 4px;

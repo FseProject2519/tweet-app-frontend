@@ -81,14 +81,27 @@ const Auth = () => {
     if (data.passwordReset === data.confirmPasswordReset) {
       passwordResetObject["password"] = data.passwordReset
       passwordResetObject["confirmPassword"] = data.confirmPasswordReset
-      let pwdResetResponse = await resetPassword(data.userId, passwordResetObject)
-      setPasswordResetMsg(pwdResetResponse.data)
-      setIsOtp(false)
-      setIsPasswordReset(false)
-      setOtpMsg("")
-      setForgotPassMsg("")
-      setData({ initialState })
-      setAction("LogIn")
+      try {
+        let pwdResetResponse = await resetPassword(data.userId, passwordResetObject)
+        setPasswordResetMsg(pwdResetResponse.data)
+        setIsOtp(false)
+        setIsPasswordReset(false)
+        setOtpMsg("")
+        setForgotPassMsg("")
+        setData({ initialState })
+        setAction("LogIn")
+      } catch (error) {
+        if (error.response.data !== undefined && error.response.data !== null) {
+          let valMsgs = error.response.data
+          let errorMessage = ""
+          for (let msg in valMsgs) {
+            errorMessage = errorMessage + (valMsgs[msg].message + "\n")
+          }
+          const formattedMessage = <ul><br />{errorMessage.split('\n').map(str => <li>{str}</li>)}</ul>;
+
+          setPasswordResetMsg(formattedMessage)
+        }
+      }
     } else {
       setPasswordResetMsg("Passwords are not matching")
     }
