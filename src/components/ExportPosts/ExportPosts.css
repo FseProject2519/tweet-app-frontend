@@ -2,4 +2,15 @@
     height: 3rem;
     width: 80%;
     align-self: center;
+    text-align: center;
+}
+
+.exportPostBG {
+    text-align: center;
+    gap: 1rem;
+    justify-content: center;
+    border-radius: 1rem;
+    border-color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
