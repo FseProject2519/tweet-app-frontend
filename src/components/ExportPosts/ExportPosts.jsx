@@ -1,6 +1,8 @@
 import React from 'react'
 import { useSelector } from "react-redux";
 import * as PostsApi from "../../api/PostsRequests";
+import './ExportPosts.css'
+
 const ExportPosts = () => {
     const user = useSelector((state) => state.authReducer.authData);
 
@@ -25,7 +27,9 @@ const ExportPosts = () => {
     }
 
     return (
-        <button className="button r-button" onClick={() => { handleExportPost(user.userId) }} data-test="ExportPosts-Test">Export My Posts</button>
+        <div className="exportPostBG" data-test="TrendCard-Test">
+            <button className="exportPostBG  r-button" onClick={() => { handleExportPost(user.userId) }} data-test="ExportPosts-Test">Export My Posts</button>
+        </div>
     )
 }
 
