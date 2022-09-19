@@ -56,8 +56,8 @@
 }
 
 .UnfollowButton {
-    color: var(--orange);
-    border: 2px solid var(--orange);
+    color: var(--blue);
+    border: 2px solid var(--blue);
     cursor: pointer;
     background: transparent;
 }
@@ -65,7 +65,7 @@
 
 .FollowersCard>button {
     font-weight: bold;
-    color: orange;
+    color: #ffffff;
     align-self: center;
     cursor: pointer;
 }
@@ -74,7 +74,7 @@
     padding-top: 1rem;
     font-weight: bold;
     font-size: large;
-    color: orange;
+    color: #ffffff;
     cursor: pointer;
     align-self: center;
 }
@@ -85,6 +85,6 @@
 }
 
 .followerButton:hover {
-    background-color: orange;
+    background-color: var(--blue);
     border: none;
 }
