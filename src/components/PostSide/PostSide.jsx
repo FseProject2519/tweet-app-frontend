@@ -5,8 +5,8 @@ import "./PostSide.css";
 
 const PostSide = ({ location }) => {
   return (
-    <div className="PostSide">
-      <PostShare location={location} />
+    <div className="PostSide" data-test="PostSide-Test">
+      <PostShare location={location} isModal={false} />
       <Posts location={location} />
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
-import "./ProfileModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { uploadImage } from "../../actions/UploadAction";
-import { updateUser } from "../../actions/UserAction";
+import { uploadProfilePicture, uploadCoverPicture } from "../../actions/UploadAction";
+import { getUser } from "../../actions/UserAction";
+import * as AuthApi from "../../api/AuthRequests"
 
 const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const theme = useMantineTheme();
@@ -12,17 +12,46 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const [formData, setFormData] = useState(other);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
-  const dispatch = useDispatch();
-  const param = useParams();
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const { user } = useSelector((state) => state.authReducer.authData);
+  const [errors, setErrors] = useState(null)
+  const dispatch = useDispatch();
+
+  const getErrors = () => {
+    console.log(errors)
+    if (errors != null) {
+      return (
+        <div>
+          <h6 className="validationListHeader">ERRORS</h6>
+          <ol className="validationList">{
+            errors.map(function (e, id) {
+              return (
+                <li key={id}>
+                  {e.message}
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      )
+    }
+    else return null
+  }
+
+  const user = useSelector((state) => state.authReducer.authData);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
+      let suffix = event.target.name === "profileImage"
+        ? "_profile"
+        : "_cover";
+      let name_split = event.target.files[0].name.split(".")
+      let extension = name_split[name_split.length - 1]
+      const img = new File([event.target.files[0]], user.userId + suffix + "." + extension);
       event.target.name === "profileImage"
         ? setProfileImage(img)
         : setCoverImage(img);
@@ -30,39 +59,57 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   };
 
   // form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let UserData = formData;
-    if (profileImage) {
-      const data = new FormData();
-      const fileName = Date.now() + profileImage.name;
-      data.append("name", fileName);
-      data.append("file", profileImage);
-      UserData.profilePicture = fileName;
-      try {
-        dispatch(uploadImage(data));
-      } catch (err) {
-        console.log(err);
+    let isImageUpdate = false
+    try {
+      await AuthApi.updateUser(user.userId, formData)
+      setIsError(false)
+      setIsSuccess(true)
+      isImageUpdate = true
+    } catch (error) {
+      if (error.response.data !== undefined && error.response.data !== null) {
+        setErrors(error.response.data)
+        setIsError(true)
+        setIsSuccess(false);
       }
     }
-    if (coverImage) {
-      const data = new FormData();
-      const fileName = Date.now() + coverImage.name;
-      data.append("name", fileName);
-      data.append("file", coverImage);
-      UserData.coverPicture = fileName;
-      try {
-        dispatch(uploadImage(data));
-      } catch (err) {
-        console.log(err);
+    if (isImageUpdate) {
+      if (profileImage) {
+        try {
+          dispatch(uploadProfilePicture(user.userId, profileImage));
+        } catch (err) {
+          console.log(err);
+          setIsSuccess(false);
+        }
+      }
+      if (coverImage) {
+        try {
+          console.log(coverImage)
+          dispatch(uploadCoverPicture(user.userId, coverImage));
+        } catch (err) {
+          console.log(err);
+          setIsSuccess(false);
+        }
       }
     }
-    dispatch(updateUser(param.id, UserData));
-    setModalOpened(false);
+
+
+    if (profileImage || coverImage) {
+      const images = importAll(require.context('../../img', false));
+      dispatch({ type: "UPDATE_IMAGES", data: images });
+    }
+
+    dispatch(getUser(user.userId));
   };
 
+  function importAll(r) {
+    return r.keys().map(r);
+  }
+
+
   return (
-    <Modal
+    <Modal data-test="ProfileModal-Test"
       overlayColor={
         theme.colorScheme === "dark"
           ? theme.colors.dark[9]
@@ -72,81 +119,92 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
       overlayBlur={3}
       size="55%"
       opened={modalOpened}
-      onClose={() => setModalOpened(false)}
+      onClose={() => {
+        setFormData(other);
+        setErrors(null);
+        setIsError(false);
+        setIsSuccess(false);
+        setModalOpened(false);
+        window.location.reload();
+      }}
     >
-      <form className="infoForm" onSubmit={handleSubmit}>
-        <h3>Your Info</h3>
-        <div>
-          <input
-            value={formData.firstname}
-            onChange={handleChange}
-            type="text"
-            placeholder="First Name"
-            name="firstname"
-            className="infoInput"
-          />
-          <input
-            value={formData.lastname}
-            onChange={handleChange}
-            type="text"
-            placeholder="Last Name"
-            name="lastname"
-            className="infoInput"
-          />
-        </div>
+      <div className="totalForm">
+        <form className="infoForm" onSubmit={handleSubmit}>
+          <h3 className="formTitle">Your Info</h3>
+          <h6 className={isSuccess ? "successVisible" : "successHidden"}>Updated Successfully!</h6>
+          <div>
+            <input
+              value={formData.userId}
+              onChange={handleChange}
+              type="text"
+              placeholder="User Id"
+              name="userid"
+              className="infoInput"
+              readonly
+            />
+            <input
+              value={formData.updatePassword}
+              onChange={handleChange}
+              type="password"
+              placeholder="Password"
+              name="updatePassword"
+              className="infoInput"
+            />
+          </div>
+          <div>
+            <input
+              value={formData.firstName}
+              onChange={handleChange}
+              type="text"
+              placeholder="First Name"
+              name="firstName"
+              className="infoInput"
+            />
+            <input
+              value={formData.lastName}
+              onChange={handleChange}
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              className="infoInput"
+            />
+          </div>
 
-        <div>
-          <input
-            value={formData.worksAt}
-            onChange={handleChange}
-            type="text"
-            placeholder="Works at"
-            name="worksAt"
-            className="infoInput"
-          />
-        </div>
+          <div>
+            <input
+              value={formData.email}
+              onChange={handleChange}
+              type="text"
+              placeholder="e-Mail"
+              name="email"
+              className="infoInput"
+              readonly
+            />
+            <input
+              value={formData.contactNumber}
+              onChange={handleChange}
+              type="text"
+              placeholder="Contact Number"
+              name="contactNumber"
+              className="infoInput"
+            />
+          </div>
 
-        <div>
-          <input
-            value={formData.livesIn}
-            onChange={handleChange}
-            type="text"
-            placeholder="Lives in"
-            name="livesIn"
-            className="infoInput"
-          />
-          <input
-            value={formData.country}
-            onChange={handleChange}
-            type="text"
-            placeholder="Country"
-            name="country"
-            className="infoInput"
-          />
-        </div>
+          <div>
+            Profile image
+            <input type="file" name="profileImage" onChange={onImageChange} accept="image/jpg" />
+            Cover image
+            <input type="file" name="coverImage" onChange={onImageChange} accept="image/jpg" />
+          </div>
 
-        <div>
-          <input
-            value={formData.relationship}
-            onChange={handleChange}
-            type="text"
-            className="infoInput"
-            placeholder="Relationship status"
-            name="relationship"
-          />
+          <button className="button infoButton" type="submit">
+            Update
+          </button>
+        </form>
+        <div className={isError ? "validationMsgVisible" : "validationMsgHidden"}>
+          {getErrors()}
         </div>
-
-        <div>
-          Profile image
-          <input type="file" name="profileImage" onChange={onImageChange} />
-          Cover image
-          <input type="file" name="coverImage" onChange={onImageChange} />
-        </div>
-
-        <button className="button infoButton" type="submit">
-          Update
-        </button>
-      </form>
+      </div>
     </Modal>
   );
 };

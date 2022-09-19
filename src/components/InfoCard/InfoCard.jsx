@@ -2,24 +2,49 @@ import React, { useEffect, useState } from "react";
 import "./InfoCard.css";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as UserApi from "../../api/UserRequests.js";
-import { logout } from "../../actions/AuthActions";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { deleteUser } from "../../actions/AuthActions";
+import { useDispatch } from "react-redux";
 
 const InfoCard = () => {
-  const dispatch = useDispatch()
   const params = useParams();
   const [modalOpened, setModalOpened] = useState(false);
   const profileUserId = params.id;
   const [profileUser, setProfileUser] = useState({});
   const user = useSelector((state) => state.authReducer.authData);
 
+  const dispatch = useDispatch()
 
-  const handleLogOut = () => {
-    dispatch(logout())
+  const handleClickDelete = () => {
+    dispatch(deleteUser(user.userId))
   }
 
+  const handleDelete = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h1>Are you sure you want to delete your account?</h1>
+            <p>Account cannot be retrieved once deleted!</p>
+            <button
+              onClick={() => {
+                handleClickDelete();
+                onClose();
+              }}
+              className="delete-confirm-button"
+            >
+              Yes
+            </button>
+            <button onClick={onClose} className="not-delete-confirm-button">No</button>
+          </div>
+        );
+      }
+    });
+  }
 
   useEffect(() => {
     const fetchProfileUser = async () => {
@@ -34,7 +59,7 @@ const InfoCard = () => {
   }, [user]);
 
   return (
-    <div className="InfoCard">
+    <div className="InfoCard" data-test="InfoCard-Test">
       <div className="infoHead">
         <h4>Profile Info</h4>
         {user.userId === profileUserId ? (
@@ -80,7 +105,7 @@ const InfoCard = () => {
         </span>
         <span>{profileUser.contactNumber}</span>
       </div>
-      <button className="button logout-button" onClick={handleLogOut}>Log Out</button>
+      <button className="button delete-button" onClick={() => handleDelete()}>Delete Account</button>
     </div>
   );
 };

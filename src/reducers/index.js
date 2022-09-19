@@ -2,12 +2,16 @@ import { combineReducers } from "redux";
 
 import authReducer from "./AuthReducer";
 import postReducer from "./PostReducer";
-import chatReducer from "./ChatUserReducer";
 import trendsReducer from "./TrendsReducer";
+import userReducer from "./UserReducer";
+import imageReducer from "./ImageReducer";
 
-export const reducers = combineReducers({
+const reducers = combineReducers({
   authReducer,
   postReducer,
-  chatReducer,
   trendsReducer,
+  userReducer,
+  imageReducer,
 });
+
+export default reducers;
