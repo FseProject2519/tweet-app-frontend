@@ -1,21 +1,30 @@
 import React from "react";
 
-import Home from "../../img/home.png";
-import Noti from "../../img/noti.png";
-import Comment from "../../img/comment.png";
-import { UilSetting } from "@iconscout/react-unicons";
+import { UilEstate } from '@iconscout/react-unicons'
+import { UilSignOutAlt } from '@iconscout/react-unicons'
 import { Link } from "react-router-dom";
+import { logout } from "../../actions/AuthActions";
+import { useDispatch } from "react-redux";
 
 const NavIcons = () => {
+
+  const dispatch = useDispatch()
+
+  const handleLogOut = () => {
+    dispatch(logout())
+  }
+
   return (
-    <div className="navIcons">
-      <Link to="../home">
-        <img src={Home} alt="" />
+    <div className="navIcons" data-test="NavIcons-Test">
+      <Link className="nav" to="../home">
+        <div title="Home" >
+          <UilEstate />
+        </div>
       </Link>
-      <UilSetting />
-      <img src={Noti} alt="" />
-      <Link to="../chat">
-        <img src={Comment} alt="" />
+      <Link className="nav" to="../auth">
+        <div title="Sign Out" >
+          <UilSignOutAlt onClick={handleLogOut} />
+        </div>
       </Link>
     </div>
   );

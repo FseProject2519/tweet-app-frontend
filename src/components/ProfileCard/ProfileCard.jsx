@@ -1,30 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProfileCard.css";
-import Cover from "../../img/cover.jpg";
-import Profile from "../../img/profileImg.jpg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 const ProfileCard = ({ location }) => {
   const user = useSelector((state) => state.authReducer.authData);
   const posts = useSelector((state) => state.postReducer.posts)
-  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
+  const postCountsPosts = posts
+  const commentCountsPosts = posts
+  const images = importAll(require.context('../../img', false));
+
+  function importAll(r) {
+    return r.keys().map(r);
+  }
+  const getImage = (type) => {
+    for (let img in images) {
+      if (("" + images[img]).includes(user.userId + "_" + type)) {
+        return images[img]
+      }
+    }
+  }
+
+  const [profilePic, setProfilePic] = useState(getImage("profile") ? getImage("profile") : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg")
+  const [coverPic, setCoverPic] = useState(getImage("cover") ? getImage("cover") : "https://amdmediccentar.rs/wp-content/plugins/uix-page-builder/includes/uixpbform/images/default-cover-4.jpg")
 
   return (
-    <div className="ProfileCard">
+    <div className="ProfileCard" data-test="ProfileCard-Test">
       <div className="ProfileImages">
-        <img src={
-          user.coverPicture
-            ? serverPublic + user.coverPicture
-            : "https://amdmediccentar.rs/wp-content/plugins/uix-page-builder/includes/uixpbform/images/default-cover-4.jpg"
-        } alt="CoverImage" />
-        <img
-          src={
-            user.profilePicture
-              ? serverPublic + user.profilePicture
-              : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
-          }
-          alt="ProfileImage"
-        />
+        <img src={coverPic} alt="CoverImage" />
+        <img src={profilePic} alt="ProfileImage" />
       </div>
       <div className="ProfileName">
         <span>{user.firstName} {user.lastName}</span>
@@ -39,9 +42,15 @@ const ProfileCard = ({ location }) => {
             <>
               <div className="follow">
                 <span>{
-                  posts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet === undefined || post.repliedToTweet === null)).length
+                  postCountsPosts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet === undefined || post.repliedToTweet === null)).length
                 }</span>
                 <span>Posts</span>
+              </div>{" "}
+              <div className="follow">
+                <span>{
+                  commentCountsPosts.filter((post) => post.createdBy === user.userId && (post.repliedToTweet !== undefined && post.repliedToTweet !== null)).length
+                }</span>
+                <span>Comments</span>
               </div>{" "}
             </>
           )}

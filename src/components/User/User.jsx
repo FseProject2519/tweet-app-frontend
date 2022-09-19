@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
 const User = ({ person }) => {
-  const publicFolder = process.env.REACT_APP_PUBLIC_FOLDER;
+  const images = useSelector((state) => state.imageReducer.images)
+
+
+  const getImage = (type) => {
+    for (let img in images) {
+      if (("" + images[img]).includes(person.userId + "_" + type)) {
+        return images[img]
+      }
+    }
+  }
+
+  const [profilePic, setProfilePic] = useState(getImage("profile") ? getImage("profile") : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg")
+
 
 
   return (
-    <div className="follower">
+    <div className="follower" data-test="User-Test">
       <div>
         <img
           src={
-            "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            profilePic
           }
           alt="profile"
           className="followerImage"
