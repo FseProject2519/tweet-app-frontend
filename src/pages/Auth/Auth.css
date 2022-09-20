@@ -27,10 +27,10 @@
 
 .Webname>h1 {
   font-size: 3rem;
-  background-color: red;
+  background-color: white;
 
   /* Create the gradient. */
-  background-image: var(--buttonBg);
+  background-image: white;
 
   /* Set the background size and repeat properties. */
   background-size: 100%;
@@ -87,11 +87,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(106.23deg, #f99827 0%, #f95f35 100%);
+  background: var(--logoBg);
   border-radius: 5px;
   border: 0px;
   padding: 4px;
-  color: white;
+  color: #458ccb;
   margin-left: auto;
   height: 4rem;
   width: 4rem;
