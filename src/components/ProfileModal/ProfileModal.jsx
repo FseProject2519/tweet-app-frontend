@@ -93,10 +93,14 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
         }
       }
     }
-
+    let images
 
     if (profileImage || coverImage) {
-      const images = importAll(require.context('../../img', false));
+      try {
+        images = importAll(require.context('../../img', false));
+      } catch (error) {
+        images = undefined
+      }
       dispatch({ type: "UPDATE_IMAGES", data: images });
     }
 
