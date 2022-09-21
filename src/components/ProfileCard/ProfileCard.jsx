@@ -7,15 +7,21 @@ const ProfileCard = ({ location }) => {
   const posts = useSelector((state) => state.postReducer.posts)
   const postCountsPosts = posts
   const commentCountsPosts = posts
-  const images = importAll(require.context('../../img', false));
-
+  let images
+  try {
+    images = importAll(require.context('../../img', false));
+  } catch (error) {
+    images = undefined
+  }
   function importAll(r) {
     return r.keys().map(r);
   }
   const getImage = (type) => {
-    for (let img in images) {
-      if (("" + images[img]).includes(user.userId + "_" + type)) {
-        return images[img]
+    if (images !== undefined) {
+      for (let img in images) {
+        if (("" + images[img]).includes(user.userId + "_" + type)) {
+          return images[img]
+        }
       }
     }
   }
