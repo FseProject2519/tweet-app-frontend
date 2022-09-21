@@ -3,8 +3,8 @@ Github Link -  https://github.com/FseProject2519/tweet-app-frontend
 ## Documents  
 1. Localhost URLs:  
     a. Tweet App - http://localhost:3000/  
-2. Unit Test Screenshot - https://github.com/FseProject2519/Tweet-Repository/blob/sam-dev/Project_Documents/Reports/MAVEN_SUREFIRE_TEST_REPORT.pdf  
-3. App Screenshots - https://github.com/FseProject2519/Tweet-Repository/tree/sam-dev/Project_Documents/Screenshots  
+2. Jest Unit Test Screenshot - https://github.com/FseProject2519/tweet-app-frontend/blob/sam-dev/screenshots/JEST_UNIT_TEST_SCREENSHOTS.pdf  
+3. UI Screenshots - https://github.com/FseProject2519/tweet-app-frontend/blob/sam-dev/screenshots/UI_SCREENSHOTS.pdf    
   
 ## SECTION A - Setting up the service in local:  
 ###### Note: Start the backend services in STS before starting the frontend  
