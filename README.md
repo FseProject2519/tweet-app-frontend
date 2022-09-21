@@ -9,7 +9,7 @@ Github Link -  https://github.com/FseProject2519/tweet-app-frontend
 ## SECTION A - Setting up the service in local:  
 ###### Note: Start the backend services in STS before starting the frontend  
 1. Clone the project in local using the command : git clone https://github.com/FseProject2519/tweet-app-frontend.git   
-2. Import the project into and IDE like Visual Studio Code  
+2. Import the project into an IDE like Visual Studio Code  
 3. Open command prompt in the project base folder location and give the following command:  
           a. Only for first time : yarn  
           b. For starting front end: yarn dev  
