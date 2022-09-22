@@ -20,8 +20,7 @@ const Auth = () => {
     passwordReset: "",
     confirmPasswordReset: ""
   };
-  //const errors=useSelector((state) => state.authReducer.errorData);
-  //let  errors = useSelector((state) => state.authReducer.errorData);
+ 
   const loading = useSelector((state) => state.authReducer.loading);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +39,7 @@ const Auth = () => {
   const[registered,setRegister]=useState(false);
 
   
-  // const dispatch = useDispatch()
+  
 
   // Reset Form
   const resetForm = () => {
@@ -123,22 +122,23 @@ const Auth = () => {
     forgotPass(true)
     setOtpMsg("")
   }
-  // const resetSignUpForm=()=>{
-  //   if(isSuccess){
-  //     resetForm();
-  //   }
-  // }
+
   const getErrors = () => {
     console.log(errors)
     if (errors != null) {
+let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.concat(b));
+        if(totalErrorPoints!==undefined && totalErrorPoints!=null){
+          console.log(totalErrorPoints);
+        
       return (
         <div>
           <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
           <ol className="validationList">{
-            errors.map(function (e, id) {
+            
+            totalErrorPoints.map(function (e, id) {
               return (
                 <li key={id}>
-                  {e.message}
+                  {e}
                 </li>
               )
             })}
@@ -146,6 +146,7 @@ const Auth = () => {
         </div>
       )
     }
+  }
     else return null
       
   }
@@ -173,11 +174,7 @@ const Auth = () => {
     e.preventDefault();
     if (action === "SignUp") {
       validation(e);
-      // let errors=dispatch(signUp(data, navigate));
-      // if(errors!==null && errors!==" "){
-      // console.log("erros from backend:"+ errors.length);
-      // setInValid(true);
-      // }
+      
         
     } else if (action === "LogIn") {
       dispatch(logIn(data, navigate));
@@ -381,19 +378,7 @@ const Auth = () => {
               />
             </div>
           )}
-          {/* {!(action === "ForgotPassword") && (
-            <span
-              style={{
-                color: "red",
-                fontSize: "12px",
-                alignSelf: "flex-end",
-                marginRight: "5px",
-                display: confirmPassword ? "none" : "block",
-              }}
-            >
-              *Confirm password is not same
-            </span>
-          )} */}
+          
           <div>
             <span
               style={{
