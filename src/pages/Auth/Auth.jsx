@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Auth.css";
 import { logIn, signUp } from "../../actions/AuthActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UilUsersAlt } from '@iconscout/react-unicons'
 import { forgotPassword, resetPassword, verifyOtp } from "../../api/AuthRequests";
+import * as AuthApi from "../../api/AuthRequests"
 
 const Auth = () => {
   const initialState = {
@@ -19,6 +20,8 @@ const Auth = () => {
     passwordReset: "",
     confirmPasswordReset: ""
   };
+  //const errors=useSelector((state) => state.authReducer.errorData);
+  //let  errors = useSelector((state) => state.authReducer.errorData);
   const loading = useSelector((state) => state.authReducer.loading);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,14 +33,23 @@ const Auth = () => {
 
   const [data, setData] = useState(initialState);
 
-  const [confirmPassword, setConfirmPassword] = useState(true);
+  
   const [forgotPassMsg, setForgotPassMsg] = useState("");
+  const[invalid,setInValid]=useState(false);
+  const [errors, setErrors] = useState(null);
+  const[registered,setRegister]=useState(false);
+
+  
   // const dispatch = useDispatch()
 
   // Reset Form
   const resetForm = () => {
     setData(initialState);
-    setConfirmPassword(confirmPassword);
+    setErrors(null);
+    setInValid(false);
+    setRegister(false);
+
+    
   };
 
   // handle Change in input
@@ -111,15 +123,62 @@ const Auth = () => {
     forgotPass(true)
     setOtpMsg("")
   }
+  // const resetSignUpForm=()=>{
+  //   if(isSuccess){
+  //     resetForm();
+  //   }
+  // }
+  const getErrors = () => {
+    console.log(errors)
+    if (errors != null) {
+      return (
+        <div>
+          <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
+          <ol className="validationList">{
+            errors.map(function (e, id) {
+              return (
+                <li key={id}>
+                  {e.message}
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      )
+    }
+    else return null
+      
+  }
+
+  const validation=async(e)=>{
+    try {
+      await AuthApi.signUp(data);
+      setInValid(false);
+      setRegister(true);
+      
+     
+    } catch (error) {
+      if (error.response.data !== undefined && error.response.data !== null) {
+        setErrors(error.response.data)
+        setInValid(true);
+        setRegister(true);
+        console.log(error);
+      }
+    }
+  }
 
   // Form Submission
   const handleSubmit = (e) => {
-    setConfirmPassword(true);
+   
     e.preventDefault();
     if (action === "SignUp") {
-      data.password === data.confirmPassword
-        ? dispatch(signUp(data, navigate))
-        : setConfirmPassword(false);
+      validation(e);
+      // let errors=dispatch(signUp(data, navigate));
+      // if(errors!==null && errors!==" "){
+      // console.log("erros from backend:"+ errors.length);
+      // setInValid(true);
+      // }
+        
     } else if (action === "LogIn") {
       dispatch(logIn(data, navigate));
     } else if (action === "ForgotPassword" && isOtp) {
@@ -148,8 +207,10 @@ const Auth = () => {
       <div className="a-right">
         <form className={forgotPassMsg !== "" ? "infoForm forgotPass authFormFp" : "infoForm authForm"} onSubmit={handleSubmit}>
           {action === "ForgotPassword" ? (<h3>Password Reset</h3>) :
-            <h3>{action === "SignUp" ? "Register" : "Login"}</h3>
+            <h3>{action === "SignUp"? "Register" : "Login"}</h3>
           }
+          {action === "SignUp" && registered?
+            (!invalid ?<h4>Registered Successfully</h4>:<h4>Please Provide Proper Details</h4>):""}
           {
             forgotPassMsg !== "" && (
               < div className="forgotPass">
@@ -320,7 +381,7 @@ const Auth = () => {
               />
             </div>
           )}
-          {!(action === "ForgotPassword") && (
+          {/* {!(action === "ForgotPassword") && (
             <span
               style={{
                 color: "red",
@@ -332,7 +393,7 @@ const Auth = () => {
             >
               *Confirm password is not same
             </span>
-          )}
+          )} */}
           <div>
             <span
               style={{
@@ -353,7 +414,7 @@ const Auth = () => {
               {(action === "ForgotPassword")
                 ? "Remember Password? Login"
                 : (action === "SignUp")
-                  ? "Already have an account? Login"
+                  ?(!invalid && registered)?"Click Here to Login": "Already have an account? Login"
                   : "Don't have an account? Sign up"}
             </span>
             {(action === "ForgotPassword" && isOtp) && (<span
@@ -371,11 +432,20 @@ const Auth = () => {
               className="button infoButton"
               type="Submit"
               disabled={loading}
+                
+              
+
             >
               {loading ? "Loading..." : action === "SignUp" ? "SignUp" : action === "ForgotPassword" ? "Submit" : "Login"}
             </button>
           </div>
         </form>
+        <div
+        className={invalid && action==="SignUp"?"regValidationMsgVisible":"validationMsgHidden"}>
+
+{getErrors()}
+
+        </div>
       </div >
     </div >
   );
