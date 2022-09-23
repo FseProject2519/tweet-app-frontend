@@ -126,7 +126,7 @@ const Auth = () => {
   const getErrors = () => {
     console.log(errors)
     if (errors != null) {
-let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.concat(b));
+let totalErrorPoints= errors.map(e=>e.message.split("?"));
         if(totalErrorPoints!==undefined && totalErrorPoints!=null){
           console.log(totalErrorPoints);
         
@@ -138,7 +138,9 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
             totalErrorPoints.map(function (e, id) {
               return (
                 <li key={id}>
-                  {e}
+                  <ul>{ e.map(function(ep){
+                    return(<li>{ep}</li>)
+                  })}</ul>
                 </li>
               )
             })}
