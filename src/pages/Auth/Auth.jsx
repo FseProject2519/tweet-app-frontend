@@ -127,24 +127,27 @@ const Auth = () => {
 
   const getErrors = () => {
     if (errors != null) {
-      let totalErrorPoints = errors.map(e => e.message.split("?")).reduce((a, b) => a.concat(b));
-      if (totalErrorPoints !== undefined && totalErrorPoints != null) {
-        return (
-          <div>
-            <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
-            <ol className="validationList">{
-
-              totalErrorPoints.map(function (e, id) {
-                return (
-                  <li key={id}>
-                    {e}
-                  </li>
-                )
-              })}
-            </ol>
-          </div>
-        )
-      }
+let totalErrorPoints= errors.map(e=>e.message.split("?"));
+        if(totalErrorPoints!==undefined && totalErrorPoints!=null){
+          console.log(totalErrorPoints);
+        
+      return (
+        <div>
+          <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
+          <ol className="validationList">{
+            
+            totalErrorPoints.map(function (e, id) {
+              return (
+                <li key={id}>
+                  <ul>{ e.map(function(ep){
+                    return(<li>{ep}</li>)
+                  })}</ul>
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      )
     }
     else return null
 
