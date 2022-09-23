@@ -1,11 +1,12 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import "./Auth.css";
-import { logIn, signUp } from "../../actions/AuthActions.js";
+import { logIn } from "../../actions/AuthActions.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UilUsersAlt } from '@iconscout/react-unicons'
 import { forgotPassword, resetPassword, verifyOtp } from "../../api/AuthRequests";
 import * as AuthApi from "../../api/AuthRequests"
+import * as UserApi from "../../api/UserRequests";
 
 const Auth = () => {
   const initialState = {
@@ -20,7 +21,7 @@ const Auth = () => {
     passwordReset: "",
     confirmPasswordReset: ""
   };
- 
+
   const loading = useSelector((state) => state.authReducer.loading);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,17 +30,18 @@ const Auth = () => {
   const [otpMsg, setOtpMsg] = useState("");
   const [isPasswordReset, setIsPasswordReset] = useState(false);
   const [passwordResetMsg, setPasswordResetMsg] = useState("");
+  const [loginMsg, setLoginMsg] = useState("");
 
   const [data, setData] = useState(initialState);
 
-  
-  const [forgotPassMsg, setForgotPassMsg] = useState("");
-  const[invalid,setInValid]=useState(false);
-  const [errors, setErrors] = useState(null);
-  const[registered,setRegister]=useState(false);
 
-  
-  
+  const [forgotPassMsg, setForgotPassMsg] = useState("");
+  const [invalid, setInValid] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [registered, setRegister] = useState(false);
+
+
+
 
   // Reset Form
   const resetForm = () => {
@@ -48,7 +50,7 @@ const Auth = () => {
     setInValid(false);
     setRegister(false);
 
-    
+
   };
 
   // handle Change in input
@@ -124,40 +126,37 @@ const Auth = () => {
   }
 
   const getErrors = () => {
-    console.log(errors)
     if (errors != null) {
-let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.concat(b));
-        if(totalErrorPoints!==undefined && totalErrorPoints!=null){
-          console.log(totalErrorPoints);
-        
-      return (
-        <div>
-          <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
-          <ol className="validationList">{
-            
-            totalErrorPoints.map(function (e, id) {
-              return (
-                <li key={id}>
-                  {e}
-                </li>
-              )
-            })}
-          </ol>
-        </div>
-      )
+      let totalErrorPoints = errors.map(e => e.message.split("?")).reduce((a, b) => a.concat(b));
+      if (totalErrorPoints !== undefined && totalErrorPoints != null) {
+        return (
+          <div>
+            <h6 className="validationListHeader">Please Follow the Mentioned Points</h6>
+            <ol className="validationList">{
+
+              totalErrorPoints.map(function (e, id) {
+                return (
+                  <li key={id}>
+                    {e}
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+        )
+      }
     }
-  }
     else return null
-      
+
   }
 
-  const validation=async(e)=>{
+  const validation = async (e) => {
     try {
       await AuthApi.signUp(data);
       setInValid(false);
       setRegister(true);
-      
-     
+
+
     } catch (error) {
       if (error.response.data !== undefined && error.response.data !== null) {
         setErrors(error.response.data)
@@ -168,16 +167,29 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
     }
   }
 
+  const login = async (formData, navigate) => {
+    let data = {}
+    try {
+      data = await AuthApi.logIn(formData).then((loginData) => {
+        localStorage.setItem("loginData", JSON.stringify(loginData.data));
+        const user = UserApi.getUser(loginData.data.userId);
+        return user;
+      });
+    } catch (error) {
+      setLoginMsg(error.response ? error.response.data ? error.response.data : "" : "")
+    }
+    dispatch(logIn(data, navigate));
+  }
   // Form Submission
   const handleSubmit = (e) => {
-   
+
     e.preventDefault();
     if (action === "SignUp") {
       validation(e);
-      
-        
+
+
     } else if (action === "LogIn") {
-      dispatch(logIn(data, navigate));
+      login(data, navigate)
     } else if (action === "ForgotPassword" && isOtp) {
       verifyToken()
     } else if (action === "ForgotPassword" && isPasswordReset) {
@@ -204,14 +216,21 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
       <div className="a-right">
         <form className={forgotPassMsg !== "" ? "infoForm forgotPass authFormFp" : "infoForm authForm"} onSubmit={handleSubmit}>
           {action === "ForgotPassword" ? (<h3>Password Reset</h3>) :
-            <h3>{action === "SignUp"? "Register" : "Login"}</h3>
+            <h3>{action === "SignUp" ? "Register" : "Login"}</h3>
           }
-          {action === "SignUp" && registered?
-            (!invalid ?<h4>Registered Successfully</h4>:<h4>Please Provide Proper Details</h4>):""}
+          {action === "SignUp" && registered ?
+            (!invalid ? <h4>Registered Successfully</h4> : <h4>Please Provide Proper Details</h4>) : ""}
           {
             forgotPassMsg !== "" && (
               < div className="forgotPass">
                 {forgotPassMsg}
+              </div>
+            )
+          }
+          {
+            loginMsg !== "" && (
+              < div className="forgotPass">
+                {loginMsg}
               </div>
             )
           }
@@ -351,6 +370,10 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
               onClick={() => {
                 resetForm();
                 setAction("ForgotPassword");
+                setLoginMsg("")
+                setForgotPassMsg("")
+                setOtpMsg("")
+                setPasswordResetMsg("")
               }}
             >
               Forgot Password
@@ -378,7 +401,7 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
               />
             </div>
           )}
-          
+
           <div>
             <span
               style={{
@@ -394,12 +417,13 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
                 setPasswordResetMsg("")
                 setIsOtp(false)
                 setIsPasswordReset(false)
+                setLoginMsg("")
               }}
             >
               {(action === "ForgotPassword")
                 ? "Remember Password? Login"
                 : (action === "SignUp")
-                  ?(!invalid && registered)?"Click Here to Login": "Already have an account? Login"
+                  ? (!invalid && registered) ? "Click Here to Login" : "Already have an account? Login"
                   : "Don't have an account? Sign up"}
             </span>
             {(action === "ForgotPassword" && isOtp) && (<span
@@ -417,8 +441,8 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
               className="button infoButton"
               type="Submit"
               disabled={loading}
-                
-              
+
+
 
             >
               {loading ? "Loading..." : action === "SignUp" ? "SignUp" : action === "ForgotPassword" ? "Submit" : "Login"}
@@ -426,9 +450,9 @@ let totalErrorPoints= errors.map(e=>e.message.split("?")).reduce((a, b) => a.con
           </div>
         </form>
         <div
-        className={invalid && action==="SignUp"?"regValidationMsgVisible":"validationMsgHidden"}>
+          className={invalid && action === "SignUp" ? "regValidationMsgVisible" : "validationMsgHidden"}>
 
-{getErrors()}
+          {getErrors()}
 
         </div>
       </div >
