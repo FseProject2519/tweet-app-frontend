@@ -110,10 +110,10 @@ class Comments extends React.Component {
                                         <span className="name"><UilPen
                                             width="2rem"
                                             height="1.2rem"
-                                            onClick={() => this.handleModalState(true)}
+                                            onClick={() => this.handleModalState(c.id)}
                                         />
                                             <ShareModal
-                                                modalOpened={this.state.modalOpened}
+                                                modalOpened={this.state.modalOpened === c.id}
                                                 setModalOpened={this.handleModalState}
                                                 oldData={c}
                                                 location={this.props.location}

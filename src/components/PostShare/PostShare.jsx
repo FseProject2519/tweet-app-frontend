@@ -15,17 +15,24 @@ const PostShare = ({ location, postId, oldData, isModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.authData);
   const loading = useSelector((state) => state.postReducer.uploading);
-  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
   const [tweetMsg, setTweetMsg] = useState(oldData ? oldData.tweetMessage : "");
   const [persons, setPersons] = useState([]);
   const [hashtags, setHashtags] = useState([]);
-  const images = useSelector((state) => state.imageReducer.images)
-
-
+  let images
+  try {
+    images = importAll(require.context('../../img', false));
+  } catch (error) {
+    images = undefined
+  }
+  function importAll(r) {
+    return r.keys().map(r);
+  }
   const getImage = (type) => {
-    for (let img in images) {
-      if (("" + images[img]).includes(user.userId + "_" + type)) {
-        return images[img]
+    if (images !== undefined) {
+      for (let img in images) {
+        if (("" + images[img]).includes(user.userId + "_" + type)) {
+          return images[img]
+        }
       }
     }
   }
