@@ -16,10 +16,6 @@ export const uploadPicture = (userId, file) => {
   axios.post("http://localhost:5000/api/uploadfile", file, {
     headers: {
       "content-type": "multipart/form-data",
-      // ,
-      // "Access-Control-Allow-Origin": "*",
-      // "Access-Control-Allow-Methods": "*",
-      // "Access-Control-Allow-Headers": "*",
     },
   });
 };

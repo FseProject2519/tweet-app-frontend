@@ -4,6 +4,8 @@ import PostShare from "../PostShare/PostShare";
 
 const ShareModal = ({ modalOpened, setModalOpened, oldData, location }) => {
   const theme = useMantineTheme();
+  console.log(oldData)
+
   return (
     <Modal data-test="ShareModal-Test"
       overlayColor={

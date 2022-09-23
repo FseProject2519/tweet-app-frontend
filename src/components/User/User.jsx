@@ -2,17 +2,24 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const User = ({ person }) => {
-  const images = useSelector((state) => state.imageReducer.images)
-
-
+  let images
+  try {
+    images = importAll(require.context('../../img', false));
+  } catch (error) {
+    images = undefined
+  }
+  function importAll(r) {
+    return r.keys().map(r);
+  }
   const getImage = (type) => {
-    for (let img in images) {
-      if (("" + images[img]).includes(person.userId + "_" + type)) {
-        return images[img]
+    if (images !== undefined) {
+      for (let img in images) {
+        if (("" + images[img]).includes(person.userId + "_" + type)) {
+          return images[img]
+        }
       }
     }
   }
-
   const [profilePic, setProfilePic] = useState(getImage("profile") ? getImage("profile") : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg")
 
 

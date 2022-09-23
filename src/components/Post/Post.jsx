@@ -19,13 +19,21 @@ const Post = ({ data, reply_data, location }) => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const dispatch = useDispatch();
-  const images = useSelector((state) => state.imageReducer.images)
-
-
+  let images
+  try {
+    images = importAll(require.context('../../img', false));
+  } catch (error) {
+    images = undefined
+  }
+  function importAll(r) {
+    return r.keys().map(r);
+  }
   const getImage = (type) => {
-    for (let img in images) {
-      if (("" + images[img]).includes(data.createdBy + "_" + type)) {
-        return images[img]
+    if (images !== undefined) {
+      for (let img in images) {
+        if (("" + images[img]).includes(data.createdBy + "_" + type)) {
+          return images[img]
+        }
       }
     }
   }
