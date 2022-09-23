@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { uploadProfilePicture, uploadCoverPicture } from "../../actions/UploadAction";
 import { getUser } from "../../actions/UserAction";
 import * as AuthApi from "../../api/AuthRequests"
@@ -19,7 +18,6 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const dispatch = useDispatch();
 
   const getErrors = () => {
-    console.log(errors)
     if (errors != null) {
       return (
         <div>
@@ -85,7 +83,6 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
       }
       if (coverImage) {
         try {
-          console.log(coverImage)
           dispatch(uploadCoverPicture(user.userId, coverImage));
         } catch (err) {
           console.log(err);
@@ -93,10 +90,14 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
         }
       }
     }
-
+    let images
 
     if (profileImage || coverImage) {
-      const images = importAll(require.context('../../img', false));
+      try {
+        images = importAll(require.context('../../img', false));
+      } catch (error) {
+        images = undefined
+      }
       dispatch({ type: "UPDATE_IMAGES", data: images });
     }
 

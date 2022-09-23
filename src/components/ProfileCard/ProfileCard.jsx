@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import "./ProfileCard.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const ProfileCard = ({ location }) => {
   const user = useSelector((state) => state.authReducer.authData);
   const posts = useSelector((state) => state.postReducer.posts)
   const postCountsPosts = posts
   const commentCountsPosts = posts
-  const images = importAll(require.context('../../img', false));
-
+  let images
+  try {
+    images = importAll(require.context('../../img', false));
+  } catch (error) {
+    images = undefined
+  }
   function importAll(r) {
     return r.keys().map(r);
   }
   const getImage = (type) => {
-    for (let img in images) {
-      if (("" + images[img]).includes(user.userId + "_" + type)) {
-        return images[img]
+    if (images !== undefined) {
+      for (let img in images) {
+        if (("" + images[img]).includes(user.userId + "_" + type)) {
+          return images[img]
+        }
       }
     }
   }

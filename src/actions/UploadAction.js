@@ -6,7 +6,7 @@ export const uploadProfilePicture =
     try {
       const formData = new FormData();
       formData.append("file", profilePicture);
-      const response = await UploadApi.uploadPicture(userId, formData);
+      await UploadApi.uploadPicture(userId, formData);
     } catch (error) {
       console.log(error);
     }
@@ -17,7 +17,7 @@ export const uploadCoverPicture =
     try {
       const formData = new FormData();
       formData.append("file", coverPicture);
-      const response = await UploadApi.uploadPicture(userId, formData);
+      await UploadApi.uploadPicture(userId, formData);
     } catch (error) {
       console.log(error);
     }

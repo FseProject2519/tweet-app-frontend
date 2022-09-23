@@ -135,3 +135,16 @@
   height: 2rem;
   align-self: flex-end;
 }
+.regValidationMsgVisible {
+  background-color: var(--cardColor);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  height: 100%;
+  width: 30%;
+  font-size: small;
+  color: black;
+  margin-left: auto;
+  text-align: left;
+  justify-content: space-evenly;
+}
