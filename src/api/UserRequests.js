@@ -14,8 +14,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const getUser = (userId) => API.get(`/search/${userId}`);
-export const getAllUser = () => API.get("/all?isPaged=false");
+export const getUser = (userId) => API.get(`/search/${userId}?isCloud=true`);
+export const getAllUser = () => API.get("/all?isCloud=true");
 export const followUser = (id, data) => API.put(`/user/${id}/follow`, data);
 export const unfollowUser = (id, data) => API.put(`/user/${id}/unfollow`, data);
 export const deleteUser = (userId) => API.delete(`/delete/${userId}`);
