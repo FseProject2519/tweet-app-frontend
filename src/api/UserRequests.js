@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8090/api/v1.0/tweets/users",
+  baseURL:
+    "http://tweet-service-lb-387958997.ap-south-1.elb.amazonaws.com/api/v1.0/tweets/users",
 });
 
 API.interceptors.request.use((req) => {

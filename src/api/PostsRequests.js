@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8090/api/v1.0/tweets" });
+const API = axios.create({
+  baseURL:
+    "http://tweet-service-lb-387958997.ap-south-1.elb.amazonaws.com/api/v1.0/tweets",
+});
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("loginData")) {
@@ -13,7 +16,8 @@ API.interceptors.request.use((req) => {
 });
 
 const EXPORT_API = axios.create({
-  baseURL: "http://localhost:8090/api/v1.0/tweets",
+  baseURL:
+    "http://tweet-service-lb-387958997.ap-south-1.elb.amazonaws.com/api/v1.0/tweets",
   responseType: "blob",
 });
 
