@@ -7,8 +7,8 @@ Github Link -  https://github.com/FseProject2519/tweet-app-frontend
 3. UI Screenshots - https://github.com/FseProject2519/tweet-app-frontend/blob/sam-dev/screenshots/UI_SCREENSHOTS.pdf    
   
 ## SECTION A - Setting up the service in local:  
-###### Note: Start the backend services in STS before starting the frontend  
-1. Clone the project in local using the command : git clone https://github.com/FseProject2519/tweet-app-frontend.git   
+###### Note: Start the backend services (except tweet-service) in STS before starting the frontend. Use cloud-sam-dev branch for backend.  
+1. Clone the project in local using the command : git clone -b cloud-sam-dev https://github.com/FseProject2519/tweet-app-frontend.git   
 2. Import the project into an IDE like Visual Studio Code  
 3. Open command prompt in the project base folder location and give the following command:  
           a. Only for first time : yarn  
